@@ -1,7 +1,8 @@
+package com.example.texteditor;
+
 import com.google.cloud.speech.v1.*;
 import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.RecognitionConfig.*;
-import com.google.cloud.speech.v1.RecognitionAudio.*;
 import com.google.protobuf.ByteString;
 import javax.sound.sampled.*;
 import java.io.*;
@@ -9,8 +10,8 @@ import java.util.List;
 
 public class SpeechToText {
     public static void main(String[] args) throws Exception {
-
-   
+        // Set Google Cloud credentials path
+        System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", "path_to_your_credentials.json");
 
         // Set up the audio capture
         TargetDataLine microphone;
@@ -29,7 +30,8 @@ public class SpeechToText {
         // Capture audio and send to Google Cloud API
         byte[] data = new byte[1024];
         AudioInputStream audioInputStream = new AudioInputStream(microphone);
-        RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder().setContent(ByteString.copyFrom(audioInputStream.read(data, 0, data.length))).build();
+        audioInputStream.read(data, 0, data.length);
+        RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder().setContent(ByteString.copyFrom(data)).build();
         
         // Set up Google Cloud Speech Client
         try (SpeechClient speechClient = SpeechClient.create()) {
@@ -50,7 +52,7 @@ public class SpeechToText {
             for (SpeechRecognitionResult result : results) {
                 SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
                 String transcript = alternative.getTranscript();
-                System.out.println("Transcript: " + transcript); // You can display this in the editor's text area
+                System.out.println("Transcript: " + transcript);
             }
         } catch (Exception e) {
             e.printStackTrace();
