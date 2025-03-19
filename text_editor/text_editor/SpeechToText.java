@@ -9,8 +9,8 @@ import java.util.List;
 
 public class SpeechToText {
     public static void main(String[] args) throws Exception {
-
-   
+        // Set Google Cloud credentials path
+        System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", "path_to_your_credentials.json");
 
         // Set up the audio capture
         TargetDataLine microphone;
