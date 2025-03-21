@@ -39,6 +39,12 @@
             <artifactId>protobuf-java</artifactId>
             <version>3.24.0</version>
         </dependency>
+        <!-- Apache PDFBox dependency for PDF export functionality -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
     </dependencies>
 
     <build>
