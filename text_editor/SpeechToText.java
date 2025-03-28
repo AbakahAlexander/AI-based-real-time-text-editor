@@ -9,10 +9,10 @@ import java.util.List;
 
 public class SpeechToText {
     public static void main(String[] args) throws Exception {
-        // Set Google Cloud credentials path
+   
         System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", "path_to_your_credentials.json");
 
-        // Set up the audio capture
+     
         TargetDataLine microphone;
         AudioFormat format = new AudioFormat(16000, 16, 1, true, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -26,12 +26,11 @@ public class SpeechToText {
         microphone.open(format);
         microphone.start();
         
-        // Capture audio and send to Google Cloud API
         byte[] data = new byte[1024];
         AudioInputStream audioInputStream = new AudioInputStream(microphone);
         RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder().setContent(ByteString.copyFrom(audioInputStream.read(data, 0, data.length))).build();
         
-        // Set up Google Cloud Speech Client
+     
         try (SpeechClient speechClient = SpeechClient.create()) {
             RecognitionConfig config = RecognitionConfig.newBuilder()
                     .setEncoding(AudioEncoding.LINEAR16)
@@ -43,14 +42,14 @@ public class SpeechToText {
                     .setAudio(recognitionAudio)
                     .build();
 
-            // Get speech-to-text result
+        
             RecognizeResponse response = speechClient.recognize(request);
             List<SpeechRecognitionResult> results = response.getResultsList();
             
             for (SpeechRecognitionResult result : results) {
                 SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
                 String transcript = alternative.getTranscript();
-                System.out.println("Transcript: " + transcript); // You can display this in the editor's text area
+                System.out.println("Transcript: " + transcript); 
             }
         } catch (Exception e) {
             e.printStackTrace();
