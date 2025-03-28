@@ -4,26 +4,21 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 
-/**
- * A simplified text editor component with word wrapping
- */
 public class PagedEditorPane extends JTextPane {
-    
-    // Background colors
+ 
     private static final Color PAGE_BACKGROUND = Color.WHITE;
     
     public PagedEditorPane() {
-        // Basic setup
+        
         setBackground(PAGE_BACKGROUND);
         
-        // Set editor kit that enforces proper text wrapping
         setEditorKit(new WrapEditorKit());
         
-        // Set reasonable margins
+        
         setMargin(new Insets(20, 20, 20, 20));
     }
     
-    // Custom editor kit that enforces word wrapping
+ 
     private static class WrapEditorKit extends StyledEditorKit {
         private final ViewFactory defaultFactory = new WrapColumnFactory();
         
@@ -54,7 +49,7 @@ public class PagedEditorPane extends JTextPane {
         }
     }
     
-    // Label view that properly wraps text
+    
     private static class WrapLabelView extends LabelView {
         public WrapLabelView(Element elem) {
             super(elem);
@@ -69,11 +64,8 @@ public class PagedEditorPane extends JTextPane {
         }
     }
 
-    /**
-     * Called by the scroll pane or container to initialize dimensions
-     * This is a stub method for compatibility
-     */
+   
     public void initializeInContainer(Container container) {
-        // Nothing needed here in the simplified version
+      
     }
 }
