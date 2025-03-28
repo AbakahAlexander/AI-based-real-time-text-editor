@@ -10,10 +10,10 @@ import java.util.List;
 
 public class SpeechToText {
     public static void main(String[] args) throws Exception {
-        // Set Google Cloud credentials path
+    
         System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", "path_to_your_credentials.json");
 
-        // Set up the audio capture
+       
         TargetDataLine microphone;
         AudioFormat format = new AudioFormat(16000, 16, 1, true, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -27,13 +27,11 @@ public class SpeechToText {
         microphone.open(format);
         microphone.start();
         
-        // Capture audio and send to Google Cloud API
         byte[] data = new byte[1024];
         AudioInputStream audioInputStream = new AudioInputStream(microphone);
         audioInputStream.read(data, 0, data.length);
         RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder().setContent(ByteString.copyFrom(data)).build();
         
-        // Set up Google Cloud Speech Client
         try (SpeechClient speechClient = SpeechClient.create()) {
             RecognitionConfig config = RecognitionConfig.newBuilder()
                     .setEncoding(AudioEncoding.LINEAR16)
@@ -45,7 +43,6 @@ public class SpeechToText {
                     .setAudio(recognitionAudio)
                     .build();
 
-            // Get speech-to-text result
             RecognizeResponse response = speechClient.recognize(request);
             List<SpeechRecognitionResult> results = response.getResultsList();
             
