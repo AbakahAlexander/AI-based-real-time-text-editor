@@ -16,7 +16,7 @@ public class SimpleTextEditor {
     private static boolean isRecording = false;
     private static JLabel statusLabel;
     
-    // Highlighter painter for search results
+   
     private static final Highlighter.HighlightPainter highlightPainter = 
             new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
 
@@ -24,17 +24,14 @@ public class SimpleTextEditor {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Simple Text Editor");
             
-            // Create custom PagedEditorPane instead of JTextPane
+        
             PagedEditorPane textArea = new PagedEditorPane();
             
-            // Set up scroll pane
+     
             JScrollPane scrollPane = new JScrollPane(textArea);
             scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             
-            // No need to set horizontal scroll bar policy or custom editor kit 
-            // as these are handled by the PagedEditorPane class
-            
-            // Add mouse listener to clear highlights
+     
             textArea.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -43,7 +40,7 @@ public class SimpleTextEditor {
                 }
             });
             
-            // Set up undo manager
+    
             final UndoManager undoManager = new UndoManager();
             Document docForUndo = textArea.getDocument();
             docForUndo.addUndoableEditListener(e -> undoManager.addEdit(e.getEdit()));
@@ -57,16 +54,16 @@ public class SimpleTextEditor {
             JMenu fileMenu = new JMenu("File");
             JMenuItem openItem = new JMenuItem("Open");
             JMenuItem saveItem = new JMenuItem("Save");
-            JMenuItem savePdfItem = new JMenuItem("Save as PDF");  // Add "Save as PDF" menu item
+            JMenuItem savePdfItem = new JMenuItem("Save as PDF"); 
             JMenuItem exitItem = new JMenuItem("Exit");
 
             fileMenu.add(openItem);
             fileMenu.add(saveItem);
-            fileMenu.add(savePdfItem);  // Add to menu
+            fileMenu.add(savePdfItem); 
             fileMenu.add(exitItem);
             menuBar.add(fileMenu);
 
-            // Important: Set the menu bar on the frame
+           
             frame.setJMenuBar(menuBar);
 
             JToolBar toolBar = new JToolBar();
@@ -107,7 +104,6 @@ public class SimpleTextEditor {
             toolBar.add(findButton);
             toolBar.add(replaceButton);
 
-            // Text formatting actions
             bolButton.addActionListener(e -> {
                 StyledDocument docStyle = textArea.getStyledDocument();
                 int start = textArea.getSelectionStart();
@@ -164,7 +160,7 @@ public class SimpleTextEditor {
                 docStyle.setCharacterAttributes(start, end - start, style, false);
             });
 
-            // Color button
+       
             colorButton.addActionListener(e -> {
                 Color color = JColorChooser.showDialog(frame, "Choose a color", Color.BLACK);
                 if (color != null) {
@@ -182,22 +178,20 @@ public class SimpleTextEditor {
                 }
             });
 
-            // Font button with font selection dialog
             fontButton.addActionListener(e -> {
-                // Get all available fonts
+          
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 String[] fontNames = ge.getAvailableFontFamilyNames();
                 
-                // Create a font selection dialog
+              
                 JDialog fontDialog = new JDialog(frame, "Select Font", true);
                 fontDialog.setLayout(new BorderLayout());
                 
-                // Create a list with all available fonts
+              
                 JList<String> fontList = new JList<>(fontNames);
                 fontList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 JScrollPane listScroller = new JScrollPane(fontList);
                 
-                // Show a preview of the selected font using JLabel instead of JTextArea
                 JLabel previewArea = new JLabel("AaBbCcDdEe");
                 previewArea.setFont(new Font(fontNames[0], Font.PLAIN, 18));
                 previewArea.setBackground(fontDialog.getBackground());
@@ -205,7 +199,7 @@ public class SimpleTextEditor {
                 previewArea.setHorizontalAlignment(JLabel.CENTER);
                 previewArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 
-                // Update preview when font is selected
+             
                 fontList.addListSelectionListener(event -> {
                     if (!event.getValueIsAdjusting()) {
                         String selectedFont = fontList.getSelectedValue();
@@ -215,7 +209,7 @@ public class SimpleTextEditor {
                     }
                 });
                 
-                // Button panel
+        
                 JPanel buttonPanel = new JPanel();
                 JButton okButton = new JButton("OK");
                 JButton cancelButton = new JButton("Cancel");
@@ -241,7 +235,7 @@ public class SimpleTextEditor {
                 buttonPanel.add(okButton);
                 buttonPanel.add(cancelButton);
                 
-                // Add components to dialog
+             
                 fontDialog.add(listScroller, BorderLayout.CENTER);
                 fontDialog.add(previewArea, BorderLayout.NORTH);
                 fontDialog.add(buttonPanel, BorderLayout.SOUTH);
@@ -251,7 +245,7 @@ public class SimpleTextEditor {
                 fontDialog.setVisible(true);
             });
 
-            // Size button
+         
             sizeButton.addActionListener(e -> {
                 String sizeStr = JOptionPane.showInputDialog(frame, "Enter font size:");
                 if (sizeStr != null) {
@@ -274,7 +268,7 @@ public class SimpleTextEditor {
                 }
             });
 
-            // Alignment button
+          
             alignButton.addActionListener(e -> {
                 String[] options = {"Left", "Center", "Right", "Justify"};
                 String align = (String) JOptionPane.showInputDialog(frame, "Choose alignment:", "Alignment", 
@@ -336,7 +330,7 @@ public class SimpleTextEditor {
                 docStyle.setParagraphAttributes(start, end - start, style, false);
             });
 
-            // Undo and redo buttons using UndoManager
+           
             undoButton.addActionListener(e -> {
                 try {
                     if (undoManager.canUndo()) {
@@ -357,20 +351,20 @@ public class SimpleTextEditor {
                 }
             });
 
-            // Cut, copy, paste buttons
+       
             cutButton.addActionListener(e -> textArea.cut());
             copyButton.addActionListener(e -> textArea.copy());
             pasteButton.addActionListener(e -> textArea.paste());
 
-            // Enhanced find button with highlighting
+            
             findButton.addActionListener(e -> {
                 String findText = JOptionPane.showInputDialog(frame, "Enter text to find:");
                 if (findText != null && !findText.isEmpty()) {
-                    // Remove previous highlights
+                   
                     Highlighter highlighter = textArea.getHighlighter();
                     highlighter.removeAllHighlights();
                     
-                    // Search for all occurrences
+                   
                     String content = textArea.getText();
                     int lastIndex = 0;
                     int findLength = findText.length();
@@ -382,11 +376,11 @@ public class SimpleTextEditor {
                         
                         if (lastIndex != -1) {
                             try {
-                                // Highlight each occurrence
+                               
                                 highlighter.addHighlight(lastIndex, lastIndex + findLength, highlightPainter);
                                 occurrences++;
                                 
-                                // If this is the first occurrence, move caret to it
+                               
                                 if (!found) {
                                     textArea.setCaretPosition(lastIndex);
                                     found = true;
@@ -435,12 +429,12 @@ public class SimpleTextEditor {
             
             toolBar.add(speechButton);
             
-            // Add components to frame with a simple BorderLayout
+           
             frame.setLayout(new BorderLayout());
             frame.add(toolBar, BorderLayout.NORTH);
             frame.add(scrollPane, BorderLayout.CENTER);
             frame.add(statusLabel, BorderLayout.SOUTH);
-            frame.setSize(900, 700);  // Set a reasonable window size
+            frame.setSize(900, 700);  
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
             frame.addWindowListener(new WindowAdapter() {
@@ -502,60 +496,54 @@ public class SimpleTextEditor {
             exitItem.addActionListener(e -> frame.dispose());
         });
     }
-    
-    /**
-     * Export the content of a JTextPane to a PDF file
-     */
+  
     private static void exportToPdf(JTextPane textPane, String filePath) throws Exception {
         try {
-            // Create a new PDF document
+            
             org.apache.pdfbox.pdmodel.PDDocument document = new org.apache.pdfbox.pdmodel.PDDocument();
             
-            // Create a new page with A4 dimensions
+          
             org.apache.pdfbox.pdmodel.PDPage page = new org.apache.pdfbox.pdmodel.PDPage(
                 org.apache.pdfbox.pdmodel.common.PDRectangle.A4
             );
             document.addPage(page);
             
-            // Create content stream for drawing on the page
+
             org.apache.pdfbox.pdmodel.PDPageContentStream contentStream = 
                 new org.apache.pdfbox.pdmodel.PDPageContentStream(document, page);
                 
-            // Set font and size
             org.apache.pdfbox.pdmodel.font.PDType1Font font = org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA;
             float fontSize = 12;
             contentStream.setFont(font, fontSize);
             
-            // Margins and positioning
             float margin = 50;
             float yPosition = page.getMediaBox().getHeight() - margin;
             float startX = margin;
             float leading = 1.5f * fontSize;
             
-            // Get text from editor
             String text = textPane.getText();
             
-            // Split text into lines
+         
             String[] lines = text.split("\n");
             
-            // Start drawing text
+          
             contentStream.beginText();
             contentStream.newLineAtOffset(startX, yPosition);
             
-            // Write each line of text
+           
             for (String line : lines) {
-                // Replace tab characters with spaces to avoid encoding issues
+                
                 line = line.replace("\t", "    ");
                 
-                // Remove any other control characters that might cause problems
+                
                 line = line.replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "");
                 
-                // Check if we need to add a new page
+             
                 if (yPosition < margin + leading) {
                     contentStream.endText();
                     contentStream.close();
                     
-                    // Create new page
+                   
                     page = new org.apache.pdfbox.pdmodel.PDPage(org.apache.pdfbox.pdmodel.common.PDRectangle.A4);
                     document.addPage(page);
                     
@@ -567,12 +555,12 @@ public class SimpleTextEditor {
                     contentStream.newLineAtOffset(startX, yPosition);
                 }
                 
-                // Only try to show text if it's not empty after filtering
+                
                 if (!line.isEmpty()) {
                     try {
                         contentStream.showText(line);
                     } catch (IllegalArgumentException e) {
-                        // If there's still an issue with specific characters, skip them
+                        
                         System.err.println("Warning: Skipping problematic line: " + e.getMessage());
                     }
                 }
@@ -581,11 +569,10 @@ public class SimpleTextEditor {
                 yPosition -= leading;
             }
             
-            // End text and close content stream
+        
             contentStream.endText();
             contentStream.close();
             
-            // Save the PDF
             document.save(filePath);
             document.close();
             
